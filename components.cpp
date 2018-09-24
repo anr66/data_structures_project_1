@@ -59,24 +59,30 @@ void get_input_file()
         //cout << split_string << endl;
 
         string delimiter = " ";
-        string token = line.substr(0, line.find(delimiter));
 
-        vector<string> split_string;
-        vector<string>::iterator v_it;
-
-        //v_it = split_string.begin();
-        v_it = split_string.insert(v_it, token);
-        //split_string.insert(token);
-        for (v_it = split_string.begin(); v_it < split_string.end(); v_it++)
+        while (line.find(delimiter) != string::npos)
         {
-            cout << ' ' << *v_it;
+            string token = line.substr(0, line.find(delimiter));
+
+            line.erase(0, line.find(delimiter) + delimiter.length());
+
+            vector<string> split_string;
+            vector<string>::iterator v_it;
+
+            //v_it = split_string.begin();
+            v_it = split_string.insert(v_it, token);
+            //split_string.insert(token);
+            for (v_it = split_string.begin(); v_it < split_string.end(); v_it++)
+            {
+                cout << ' ' << *v_it;
+            }
         }
 
 
         //cout << split_string << endl;
 
 
-        cout << line << endl;
+        //cout << line << endl;
     }
 }
 
