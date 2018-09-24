@@ -1,9 +1,12 @@
+// includes
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <list>
 #include <string>
+#include <iterator>
 
+// using statements
 using std::cout;
 using std::cin;
 using std::endl;
@@ -12,8 +15,11 @@ using std::vector;
 using std::string;
 using std::list;
 using std::ifstream;
+using std::istringstream;
 
+// function prototypes
 void get_input_file();
+list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x);
 
 int main()
 {
@@ -29,7 +35,7 @@ int main()
 void get_input_file()
 {
     ifstream input_file;
-    string file_name; 
+    string file_name;
 
     cout << "Please enter a file name to process\n";
     cin >> file_name;
@@ -43,17 +49,44 @@ void get_input_file()
 
     string line;
 
+    // print the contents of the file
+    cout << "Raw file contents:\n";
     while(!(input_file.eof()))
     {
         getline(input_file, line);
-	cout << line << endl; 
-    }
+        //istringstream iss(line);
+        //vector<string> split_string(istream_iterator<string>(iss), istream_iterator<string>());
+        //cout << split_string << endl;
 
+        string delimiter = " ";
+        string token = line.substr(0, line.find(delimiter));
+
+        vector<string> split_string;
+        vector<string>::iterator v_it;
+
+        //v_it = split_string.begin();
+        v_it = split_string.insert(v_it, token);
+        //split_string.insert(token);
+        for (v_it = split_string.begin(); v_it < split_string.end(); v_it++)
+        {
+            cout << ' ' << *v_it;
+        }
+
+
+        //cout << split_string << endl;
+
+
+        cout << line << endl;
+    }
 }
 
 
-//iterator find_gt()
-//{
+list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x)
+{
+    // loop through list items
+    for (list<int>::iterator list_item = start; list_item != stop; list_item++)
+    {
 
+    }
 
-//}
+}
