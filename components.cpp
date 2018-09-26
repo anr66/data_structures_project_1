@@ -24,13 +24,16 @@ using std::istringstream;
 // function prototypes
 vector<list<int>> get_input_file();
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x);
+void print_adj_list(vector<list<int>> adj_list);
 
 int main()
 {
     vector<list<int>> adj_list;
 
+    // form the adjacency list
     adj_list = get_input_file();
 
+    print_adj_list(adj_list);
     return 0;
 
 }
@@ -68,13 +71,13 @@ vector<list<int>> get_input_file()
     {
         getline(input_file, line);
 
-        cout << "line: " << line << endl;
+        //cout << "line: " << line << endl;
 
         istringstream iss(line);
 
         for (string s; iss >> s;)
         {
-            cout << s << endl;
+            //cout << s << endl;
             // convert string into an int
             int value = stoi(s);
 
@@ -91,11 +94,11 @@ vector<list<int>> get_input_file()
                 my_list.insert(list_iter, value);
             }
 
-            cout << "mylist contains:\n";
-            for (list_iter = my_list.begin(); list_iter != my_list.end(); ++list_iter)
-            {
-                cout << *list_iter;
-            }
+            //cout << "mylist contains:\n";
+            //for (list_iter = my_list.begin(); list_iter != my_list.end(); ++list_iter)
+            //{
+            //    cout << *list_iter;
+            //}
         }
 
         adj_list.push_back(my_list);
@@ -106,12 +109,12 @@ vector<list<int>> get_input_file()
 
         //for(vector_iter = adj_list.begin(); vector_iter != adj_list.end(); ++vector_iter)
         //{
-          //for (list_iter = my_list.begin(); list_iter != my_list.end(); ++list_iter)
-          //{
-          //    cout << *list_iter << " ";
-          //}
-            //cout << "adj_list: " << *vector_iter << endl;
-            //cout << "\n";
+        //    for (list_iter = vector_iter->begin(); list_iter != vector_iter->end(); ++list_iter)
+        //    {
+        //        cout << *list_iter << " ";
+        //    }
+
+        //    cout << "\n";
         //}
     }
 
@@ -131,5 +134,19 @@ list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
     }
 
     return stop;
+}
 
+void print_adj_list(vector<list<int>> adj_list)
+{
+    vector<list<int>>::iterator vector_iter;
+    list<int>::iterator list_iter;
+    for(vector_iter = adj_list.begin(); vector_iter != adj_list.end(); ++vector_iter)
+    {
+        for (list_iter = vector_iter->begin(); list_iter != vector_iter->end(); ++list_iter)
+        {
+            cout << *list_iter << " ";
+        }
+
+        cout << "\n";
+    }
 }
