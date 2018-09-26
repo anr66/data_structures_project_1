@@ -1,5 +1,9 @@
+// Alycia Riese
+// components.cpp
+
 // includes
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <vector>
 #include <list>
@@ -18,21 +22,24 @@ using std::ifstream;
 using std::istringstream;
 
 // function prototypes
-void get_input_file();
+vector<list<int>> get_input_file();
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x);
 
 int main()
 {
-    std::vector <std::list<int>> adj_list;
+    vector<list<int>> adj_list;
 
-    get_input_file();
+    adj_list = get_input_file();
 
     return 0;
 
 }
 
 
-void get_input_file()
+// Asks the user for a file name to process, then adds the contents to the
+// adjacency list.
+// Returns: adjacency list
+vector<list<int>> get_input_file()
 {
     ifstream input_file;
     string file_name;
@@ -49,50 +56,80 @@ void get_input_file()
 
     string line;
 
+    vector <list<int>> adj_list;
+    list<int> my_list;
+
+    list<int>::iterator list_iter = my_list.begin();
+    vector<list<int>>::iterator vector_iter = adj_list.begin();
+
     // print the contents of the file
-    cout << "Raw file contents:\n";
+    //cout << "Raw file contents:\n";
     while(!(input_file.eof()))
     {
         getline(input_file, line);
-        //istringstream iss(line);
-        //vector<string> split_string(istream_iterator<string>(iss), istream_iterator<string>());
-        //cout << split_string << endl;
 
-        string delimiter = " ";
+        cout << "line: " << line << endl;
 
-        while (line.find(delimiter) != string::npos)
+        istringstream iss(line);
+
+        for (string s; iss >> s;)
         {
-            string token = line.substr(0, line.find(delimiter));
+            cout << s << endl;
+            // convert string into an int
+            int value = stoi(s);
 
-            line.erase(0, line.find(delimiter) + delimiter.length());
-
-            vector<string> split_string;
-            vector<string>::iterator v_it;
-
-            //v_it = split_string.begin();
-            v_it = split_string.insert(v_it, token);
-            //split_string.insert(token);
-            for (v_it = split_string.begin(); v_it < split_string.end(); v_it++)
+            // if the list is empty, insert value
+            if (my_list.size() == 0)
             {
-                cout << ' ' << *v_it;
+                my_list.insert(list_iter, value);
+            }
+
+            // else, find the greater than iterator and insert it there
+            else
+            {
+                list_iter = find_gt(my_list.begin(), my_list.end(), value);
+                my_list.insert(list_iter, value);
+            }
+
+            cout << "mylist contains:\n";
+            for (list_iter = my_list.begin(); list_iter != my_list.end(); ++list_iter)
+            {
+                cout << *list_iter;
             }
         }
 
+        adj_list.push_back(my_list);
+        //adj_list.insert(vector_iter, my_list);
+        //vector_iter++;
+        my_list.clear();
+        list_iter = my_list.begin();
 
-        //cout << split_string << endl;
-
-
-        //cout << line << endl;
+        //for(vector_iter = adj_list.begin(); vector_iter != adj_list.end(); ++vector_iter)
+        //{
+          //for (list_iter = my_list.begin(); list_iter != my_list.end(); ++list_iter)
+          //{
+          //    cout << *list_iter << " ";
+          //}
+            //cout << "adj_list: " << *vector_iter << endl;
+            //cout << "\n";
+        //}
     }
-}
 
+    return adj_list;
+}
 
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x)
 {
     // loop through list items
     for (list<int>::iterator list_item = start; list_item != stop; list_item++)
     {
-
+        // if the value we want to insert is less than the current list item, return that position
+        if (x < *list_item)
+        {
+            return list_item;
+        }
     }
+
+    return stop;
 
 }
