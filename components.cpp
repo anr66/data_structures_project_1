@@ -20,21 +20,23 @@ using std::string;
 using std::list;
 using std::ifstream;
 using std::istringstream;
+using std::stoi;
 
 // function prototypes
-vector<list<int>> get_input_file();
+vector<list<int> > get_input_file();
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x);
-void print_adj_list(vector<list<int>> adj_list);
+void print_adj_list(vector<list<int> > adj_list);
 bool conn_component(list<int> list1, list<int> list2);
 
 // main
 int main()
 {
-    vector<list<int>> adj_list;
+    vector<list<int> > adj_list;
 
     // form the adjacency list
     adj_list = get_input_file();
 
+	// print list
     print_adj_list(adj_list);
     return 0;
 
@@ -44,7 +46,7 @@ int main()
 // Asks the user for a file name to process, then adds the contents to the
 // adjacency list.
 // Returns: adjacency list
-vector<list<int>> get_input_file()
+vector<list<int> > get_input_file()
 {
     ifstream input_file;
     string file_name;
@@ -61,11 +63,11 @@ vector<list<int>> get_input_file()
 
     string line;
 
-    vector <list<int>> adj_list;
+    vector <list<int> > adj_list;
     list<int> my_list;
 
     list<int>::iterator list_iter = my_list.begin();
-    vector<list<int>>::iterator vector_iter = adj_list.begin();
+    vector<list<int> >::iterator vector_iter = adj_list.begin();
 
     // print the contents of the file
     while(getline(input_file, line))
@@ -119,9 +121,9 @@ list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
 
 
 // Takes in a vector of lists and prints out all values
-void print_adj_list(vector<list<int>> adj_list)
+void print_adj_list(vector<list<int> > adj_list)
 {
-    vector<list<int>>::iterator vector_iter;
+    vector<list<int> >::iterator vector_iter;
     list<int>::iterator list_iter;
     int list_num = 0;
 
@@ -142,10 +144,10 @@ void print_adj_list(vector<list<int>> adj_list)
 
 
 // Reads two lists, and determines if they can be merged (if they share a value)
-bool conn_component(list<int> list1, list<int> list2)
+bool conn_component(const list<int> &list1, const list<int> &list2)
 {
-    list<int>::iterator list1_iter;
-    list<int>::iterator list2_iter;
+    list<int>::const_iterator list1_iter;
+    list<int>::const_iterator list2_iter;
 
     for (list1_iter = list1.begin(); list1_iter != list2.end(); ++list1_iter)
     {
@@ -163,8 +165,17 @@ bool conn_component(list<int> list1, list<int> list2)
 
 
 //
-bool merge2(list<int> &, list<int> &)
+bool merge2(list<int> list1, list<int> list2)
 {
-
-
+	// if they can be merged, merge the lists
+    if (conn_component(list1, list2))
+	{
+	    return true;	
+	}
+	
+	else
+	{
+	    cout << "Cannot merge: Lists do not share common node\n";
+		return false;
+	}
 }
