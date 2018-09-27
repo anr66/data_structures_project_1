@@ -142,14 +142,29 @@ void print_adj_list(vector<list<int>> adj_list)
 
 
 // Reads two lists, and determines if they can be merged (if they share a value)
-bool conn_component(const list<int> &list1, const list<int> &list2)
+bool conn_component(list<int> list1, list<int> list2)
 {
     list<int>::iterator list1_iter;
-    list<int>::iterator list1_iter;
+    list<int>::iterator list2_iter;
 
-    for (list1_iter = list1.begin(); list1_iter != list.end(); ++list1_iter)
+    for (list1_iter = list1.begin(); list1_iter != list2.end(); ++list1_iter)
     {
-        *list1_iter
+        for (list2_iter = list2.begin(); list2_iter != list2.end(); ++list2_iter)
+        {
+            if (*list1_iter == *list2_iter)
+            {
+                return true;
+            }
+        }
     }
+
+    return false;
+}
+
+
+//
+bool merge2(list<int> &, list<int> &)
+{
+
 
 }
