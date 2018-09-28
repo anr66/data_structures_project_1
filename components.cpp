@@ -20,13 +20,13 @@ using std::string;
 using std::list;
 using std::ifstream;
 using std::istringstream;
-using std::stoi;
+//using std::stoi;
 
 // function prototypes
 vector<list<int> > get_input_file();
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x);
 void print_adj_list(vector<list<int> > adj_list);
-bool conn_component(list<int> list1, list<int> list2);
+bool connComponent(const list<int> &list1, const list<int> &list2);
 
 // main
 int main()
@@ -144,7 +144,7 @@ void print_adj_list(vector<list<int> > adj_list)
 
 
 // Reads two lists, and determines if they can be merged (if they share a value)
-bool conn_component(const list<int> &list1, const list<int> &list2)
+bool connComponent(const list<int> &list1, const list<int> &list2)
 {
     list<int>::const_iterator list1_iter;
     list<int>::const_iterator list2_iter;
@@ -165,14 +165,14 @@ bool conn_component(const list<int> &list1, const list<int> &list2)
 
 
 //
-bool merge2(list<int> list1, list<int> list2)
+bool merge2(list<int> &list1, list<int> &list2)
 {
 	// if they can be merged, merge the lists
-    if (conn_component(list1, list2))
+    if (connComponent(list1, list2))
 	{
-	    return true;	
+	    return true;
 	}
-	
+
 	else
 	{
 	    cout << "Cannot merge: Lists do not share common node\n";
