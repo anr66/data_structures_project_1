@@ -27,19 +27,65 @@ vector<list<int> > get_input_file();
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop, int x);
 void print_adj_list(vector<list<int> > adj_list);
 bool connComponent(const list<int> &list1, const list<int> &list2);
+bool merge2(list<int> &list1, list<int> &list2);
 
 // main
 int main()
 {
     vector<list<int> > adj_list;
+    bool result;
 
     // form the adjacency list
     adj_list = get_input_file();
 
-	// print list
+    // print list
     print_adj_list(adj_list);
-    return 0;
 
+    while (1)
+    {
+
+
+        int first_number;
+        int second_number;
+
+        cout << "Enter two numbers for lists to merge. Enter a negative number to stop.\n";
+        cout << "First number:\n";
+        cin >> first_number;
+
+        if (first_number < 0)
+        {
+            cout << "Stopped";
+            print_adj_list(adj_list);
+            return 0;
+        }
+
+        cout << "Second number:\n";
+        cin >> second_number;
+
+        if (first_number < 0)
+        {
+            cout << "Stopped";
+            print_adj_list(adj_list);
+            return 0;
+        }
+
+        result = merge2(adj_list.at(first_number), adj_list.at(second_number));
+
+        // if the merge was successful, we need to get rid of the empty list from adj_list
+        if (result == true)
+        {
+            for (vector<list<int>>::iterator test_empty = adj_list.begin(); test_empty != adj_list.end(); ++test_empty)
+            {
+                cout << test_empty->size();
+                if (test_empty->size() == 0)
+                {
+                    adj_list.erase(test_empty);
+                }
+            }
+        }
+
+        print_adj_list(adj_list);
+    }
 }
 
 
@@ -167,9 +213,25 @@ bool connComponent(const list<int> &list1, const list<int> &list2)
 //
 bool merge2(list<int> &list1, list<int> &list2)
 {
+    list<int>::iterator list_iter;
+    //list<int>::iterator list2_iter;
+
+    int size1 = list1.size();
+    int size2 = list2.size();
+
 	// if they can be merged, merge the lists
     if (connComponent(list1, list2))
 	{
+        for (list_iter = list1.begin(); list_iter != list1.end(); ++list_iter)
+        {
+            int value = *list_iter;
+            list<int>::iterator iter = find_gt(list2.begin(), list2.end(), value);
+            list1.insert(iter, value);
+        }
+
+        list2.unique();
+        list1.clear();
+
 	    return true;
 	}
 
