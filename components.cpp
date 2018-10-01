@@ -95,6 +95,11 @@ int main()
             }
         }
 
+        else if (result == false)
+        {
+            cout << "Lists were not merged, please try again\n";
+        }
+
         // print the list after the merge
         print_adj_list(adj_list);
     }
@@ -206,7 +211,7 @@ bool connComponent(const list<int> &list1, const list<int> &list2)
     list<int>::const_iterator list1_iter;
     list<int>::const_iterator list2_iter;
 
-    for (list1_iter = list1.begin(); list1_iter != list2.end(); ++list1_iter)
+    for (list1_iter = list1.begin(); list1_iter != list1.end(); ++list1_iter)
     {
         for (list2_iter = list2.begin(); list2_iter != list2.end(); ++list2_iter)
         {
@@ -225,7 +230,6 @@ bool connComponent(const list<int> &list1, const list<int> &list2)
 bool merge2(list<int> &list1, list<int> &list2)
 {
     list<int>::iterator list_iter;
-    //list<int>::iterator list2_iter;
 
     int size1 = list1.size();
     int size2 = list2.size();
@@ -243,8 +247,8 @@ bool merge2(list<int> &list1, list<int> &list2)
                 list1.insert(iter, value);
             }
 
-            list2.unique();
-            list1.clear();
+            list1.unique();
+            list2.clear();
 
     	    return true;
     	}
@@ -270,8 +274,8 @@ bool merge2(list<int> &list1, list<int> &list2)
                 list2.insert(iter, value);
             }
 
-            list1.unique();
-            list2.clear();
+            list2.unique();
+            list1.clear();
 
     	    return true;
     	}
