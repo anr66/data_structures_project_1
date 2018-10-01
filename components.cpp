@@ -32,7 +32,10 @@ bool merge2(list<int> &list1, list<int> &list2);
 // main
 int main()
 {
+    // declare the adjacency list
     vector<list<int> > adj_list;
+
+    // result of the merge
     bool result;
 
     // form the adjacency list
@@ -41,10 +44,9 @@ int main()
     // print list
     print_adj_list(adj_list);
 
+    // infinite loop time
     while (1)
     {
-
-
         int first_number;
         int second_number;
 
@@ -52,6 +54,7 @@ int main()
         cout << "First number:\n";
         cin >> first_number;
 
+        // the user has entered a negative, so stop
         if (first_number < 0)
         {
             cout << "Stopped";
@@ -62,13 +65,22 @@ int main()
         cout << "Second number:\n";
         cin >> second_number;
 
-        if (first_number < 0)
+        // the user has entered a negative, so stop
+        if (second_number < 0)
         {
             cout << "Stopped";
             print_adj_list(adj_list);
             return 0;
         }
 
+        // catch the out of range exceptions
+        if ((first_number > adj_list.size()) || (second_number > adj_list.size()))
+        {
+            cout << "You inputted a number out of range, try again\n";
+            break;
+        }
+
+        // perform the merge
         result = merge2(adj_list.at(first_number), adj_list.at(second_number));
 
         // if the merge was successful, we need to get rid of the empty list from adj_list
@@ -76,14 +88,14 @@ int main()
         {
             for (vector<list<int>>::iterator test_empty = adj_list.begin(); test_empty != adj_list.end(); ++test_empty)
             {
-                cout << test_empty->size();
-                if (test_empty->size() == 0)
+                if (test_empty->empty())
                 {
                     adj_list.erase(test_empty);
                 }
             }
         }
 
+        // print the list after the merge
         print_adj_list(adj_list);
     }
 }
@@ -122,7 +134,6 @@ vector<list<int> > get_input_file()
 
         for (string s; iss >> s;)
         {
-            //cout << s << endl;
             // convert string into an int
             int value = stoi(s);
 
@@ -210,7 +221,7 @@ bool connComponent(const list<int> &list1, const list<int> &list2)
 }
 
 
-//
+// determines which list is bigger and merges the smaller list into it
 bool merge2(list<int> &list1, list<int> &list2)
 {
     list<int>::iterator list_iter;
@@ -219,25 +230,56 @@ bool merge2(list<int> &list1, list<int> &list2)
     int size1 = list1.size();
     int size2 = list2.size();
 
-	// if they can be merged, merge the lists
-    if (connComponent(list1, list2))
-	{
-        for (list_iter = list1.begin(); list_iter != list1.end(); ++list_iter)
-        {
-            int value = *list_iter;
-            list<int>::iterator iter = find_gt(list2.begin(), list2.end(), value);
-            list1.insert(iter, value);
-        }
+    // if list 1 is bigger, merge into list 1
+    if (size1 > size2)
+    {
+        // if they can be merged, merge the lists
+        if (connComponent(list1, list2))
+    	{
+            for (list_iter = list1.begin(); list_iter != list1.end(); ++list_iter)
+            {
+                int value = *list_iter;
+                list<int>::iterator iter = find_gt(list2.begin(), list2.end(), value);
+                list1.insert(iter, value);
+            }
 
-        list2.unique();
-        list1.clear();
+            list2.unique();
+            list1.clear();
 
-	    return true;
-	}
+    	    return true;
+    	}
 
-	else
-	{
-	    cout << "Cannot merge: Lists do not share common node\n";
-		return false;
-	}
+        else
+    	{
+    	    cout << "Cannot merge: Lists do not share common node\n";
+    		return false;
+    	}
+    }
+
+    // if list2 is bigger, insert into list2. if they are the same, it doesn't matter
+    // which one is bigger, so lets do this
+    else
+    {
+        // if they can be merged, merge the lists
+        if (connComponent(list1, list2))
+    	{
+            for (list_iter = list2.begin(); list_iter != list2.end(); ++list_iter)
+            {
+                int value = *list_iter;
+                list<int>::iterator iter = find_gt(list1.begin(), list1.end(), value);
+                list2.insert(iter, value);
+            }
+
+            list1.unique();
+            list2.clear();
+
+    	    return true;
+    	}
+
+        else
+    	{
+    	    cout << "Cannot merge: Lists do not share common node\n";
+    		return false;
+    	}
+    }
 }
